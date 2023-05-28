@@ -1,2 +1,2 @@
 # akarivmm
-実験用だょ
+experimental VMM by akarilab.net
