@@ -27,9 +27,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <akarivmm/types.h>
+#ifndef AKARIVMM_TYPES_H
+#define AKARIVMM_TYPES_H
 
-void
-vmm_init_cpu0() {
-	;
-}
+typedef unsigned long u64;
+typedef long i64;
+typedef unsigned int u32;
+typedef signed int i32;
+typedef unsigned short u16;
+typedef signed short i16;
+typedef unsigned char u8;
+typedef signed char i8;
+
+/* physical address */
+typedef u64 physaddr_t;
+typedef u64 dma_addr_t;
+
+#define NULL ((void *)0)
+
+typedef _Bool bool;
+
+#define true 1
+#define false 0
+
+#define offsetof(st, m) ((u64)((char *)&((st *)0)->m - (char *)0))
+
+#define container_of(ptr, st, m)  \
+  ({ const typeof(((st *)0)->m) *_mptr = (ptr); \
+     (st *)((char *)_mptr - offsetof(st, m)); })
+
+#endif

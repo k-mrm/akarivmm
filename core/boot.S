@@ -1,0 +1,2 @@
+	.code16
+entry:
