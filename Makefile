@@ -38,9 +38,15 @@ vmm.elf: $(OBJS) link.ld
 vmm.img: bootblock vmm.elf
 
 vmm.iso: vmm.elf boot/grub.cfg
+	@mkdir -p iso
+	@mkdir -p iso/boot
+	@mkdir -p iso/grub
+	@cp boot/grub.cfg iso/grub
+	@cp vmm.elf boot/
+	@grub-mkrescue -o $@ iso/
 
 clean:
-	$(RM) $(OBJS) vmm.elf
+	$(RM) $(OBJS) vmm.elf vmm.iso
 
 qemu-img: vmm.img
 	$(QEMU) -nographic -drive file=vmm.img,index=0,media=disk,format=raw -smp $(NCPU) -m $(MEMSZ)
