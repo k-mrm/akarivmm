@@ -36,7 +36,6 @@
 
 .section ".text.head"
 
-.global multiboot_header
 multiboot_header:
 	.long	MULTIBOOT2_MAGIC
 	.long	MULTIBOOT2_FLAGS
@@ -46,5 +45,6 @@ header_end:
 
 .section ".text"
 .code32
+.global entry32
 entry32:
 	hlt
