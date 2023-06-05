@@ -28,8 +28,18 @@
  */
 
 #include <akarivmm/types.h>
+#include <akarivmm/asm.h>
+#include <akarivmm/multiboot.h>
+#include <akarivmm/compiler.h>
 
-void
-vmm_init_cpu0() {
-	;
+void __noreturn
+vmm_main_bsp(void) {
+	for(;;)
+		hlt();
+}
+
+void __noreturn
+vmm_main_ap(void) {
+	for(;;)
+		hlt();
 }

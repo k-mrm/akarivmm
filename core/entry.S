@@ -27,6 +27,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <akarivmm/asm.h>
+
 #define MULTIBOOT2_MAGIC	0xe85250d6
 #define MULTIBOOT2_FLAGS	0		// 32bit i386
 #define MULTIBOOT2_LENGTH	(header_end - multiboot_header)
@@ -41,10 +43,45 @@ multiboot_header:
 	.long	MULTIBOOT2_FLAGS
 	.long	MULTIBOOT2_LENGTH
 	.long	CHECKSUM
+
+	.word	0
+	.word	0
+	.long	8
 header_end:
 
-.section ".text"
+.section ".text.boot"
 .code32
 .global entry32
 entry32:
-	hlt
+	cli
+
+	// enable PAE
+	movl	%cr4, %eax
+	orl	$CR4_PAE, %eax
+	movl	%eax, %cr4
+
+	// init sp
+	movl	$0x7c00, %eax
+	movl	%eax, %esp
+
+	// init pgt
+
+	// enable long mode
+	movl	$0xc0000080, %ecx
+	rdmsr
+	orl	$EFER_LME, %eax
+	wrmsr
+
+	movl	entry64, %eax
+	jmp	*%eax
+
+.code64
+.global entry64
+entry64:
+	call	vmm_main_bsp
+
+	// never return here!
+	jmp	.
+
+zerobss:
+	ret
