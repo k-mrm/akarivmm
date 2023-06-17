@@ -44,7 +44,7 @@ vmm.iso: vmm.elf boot/grub.cfg
 	@grub-mkrescue -o $@ iso/
 
 clean:
-	$(RM) $(OBJS) vmm.elf vmm.iso
+	$(RM) $(OBJS) vmm.elf vmm.iso boot/boot.o
 	$(RM) -rf iso/
 
 qemu-img: vmm.img
